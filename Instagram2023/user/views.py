@@ -1,5 +1,5 @@
-from .serializers import EmployeeSerializer
-from .models import Employee
+from .serializers import EmployeeSerializer, FarmerSerializer
+from .models import Employee, Farmer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -13,7 +13,6 @@ def create_employee(request):
 
         return Response(serializer.data)
     if request.method=='POST':
-        print(request.data)
         serializer = EmployeeSerializer(data=request.data, many=False)
         if serializer.is_valid():
             serializer.save()
@@ -21,3 +20,22 @@ def create_employee(request):
             print(serializer.error_messages)    
 
         return Response(serializer.data)
+
+@api_view(['GET','POST'])
+def create_farmer(request):
+    if request.method =='GET':
+        farmers = Farmer.objects.all()
+        serializer = FarmerSerializer(data=farmers, many=True)
+        if serializer.is_valid():
+            pass
+
+        return Response(serializer.data)
+    if request.method=='POST':
+        serializer = FarmerSerializer(data=request.data, many=False)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            print(serializer.error_messages)    
+
+        return Response(serializer.data)
+    
